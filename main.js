@@ -1,72 +1,57 @@
-/* let usuario = "julianperry97";
-let contraseña = "26084";
 
-function ingresarUsuario(){
-    let otroUsuario  = prompt("Ingresar su nombre de usuario");
-    return otroUsuario;
+//// Simulador interactivo tienda ////
+
+function Producto(nombre, precio) {
+    this.nombre = nombre;
+    this.precio = precio;
 }
 
-function ingresarContraseña(){
-    let otraContraseña = prompt("Ingresar su contraseña");
-    return otraContraseña;
-}
+const productos = [
+    new Producto("Calleras", 7500),
+    new Producto("Muñequeras", 3500),
+    new Producto("Soga", 5000),
+    new Producto("Cinturón", 9000),
+    new Producto("Pelota de ejercicio", 5000),
+    new Producto("Pesas", 12000),
+    new Producto("Colchonetas", 1000)
+];
 
-let i = 26084;
-while (i === 26084){
-    if (usuario == ingresarUsuario() ){
-        if (contraseña == ingresarContraseña()){
-            alert("Bienvenido a nuestra plataforma: Julian Puebla");
-            break;
-        } else {
-            alert("El usuario ingresado o la contraseña son incorrectos");
-        }
-    } else  {
-        if (contraseña !== ingresarContraseña()){
-        alert("El usuario ingresado o la contraseña son incorrectos");
-        } else {
-            alert("El usuario ingresado o la contraseña son incorrectos");
-        }
-    } */
+const calcularTotal = (cantidad, precio) => cantidad * precio;
 
-
-    //// Simulador interactivo tienda ////
-
-    alert("Ingrese la opcion del producto que desea llevar, para finalizar compra ingrese 0")
-let seleccionarProductos = Number(prompt("1-Calleras $7500 2-Muñequeras $3500 3-Soga $5000 4-Cinturon $9000 "))
-let seleccionarCantidad;
 let total = 0;
 
-
-const cantidad = (cant, precio) => {
-    return cant * precio
+// Función para buscar y filtrar productos por nombre
+function buscarProductoPorNombre(nombre) {
+    const resultados = productos.filter(producto => producto.nombre.toLowerCase().includes(nombre.toLowerCase()));
+    return resultados;
 }
 
+while (true) {
+    const seleccionarProductos = Number(prompt(
+        "1- Buscar producto por nombre\n2- Calleras $7500\n3- Muñequeras $3500\n4- Soga $5000\n5- Cinturón $9000\n6- Pelota de ejercicio $5000\n7- Pesas $12000\n8- Colchonetas $1000\n0- Finalizar compra"
+    ));
 
-while (seleccionarProductos != 0) {
-    switch (seleccionarProductos) {
-        case 1:
-            seleccionarCantidad = Number(prompt("El producto seleccionado es Calleras, indique la cantidad"))
-            total += cantidad(seleccionarCantidad, 7500)
-            break;
-        case 2:
-            seleccionarCantidad = Number(prompt("El producto seleccionado es Muñequera, indique la cantidad"))
-            total += cantidad(seleccionarCantidad, 3500)
-            break;
-        case 3:
-            seleccionarCantidad = Number(prompt("El producto seleccionado es Soga, indique la cantidad"))
-            total += cantidad(seleccionarCantidad, 5000)
-            break;
-        case 4:
-            seleccionarCantidad = Number(prompt("El producto seleccionado es Cinturon, indique la cantidad"))
-            total += cantidad(seleccionarCantidad, 9000)
-            break;
+    if (seleccionarProductos === 1) {
+        const terminoBusqueda = prompt("Ingrese el nombre del producto a buscar:");
+        const resultadosBusqueda = buscarProductoPorNombre(terminoBusqueda);
 
-        default:
-            break;
+        if (resultadosBusqueda.length > 0) {
+            alert("Resultados de la búsqueda:\n" + resultadosBusqueda.map(producto => `${producto.nombre} - $${producto.precio}`).join("\n"));
+        } else {
+            alert("No se encontraron resultados para la búsqueda.");
+        }
+    } else if (seleccionarProductos >= 2 && seleccionarProductos <= 8) {
+        const cantidad = Number(prompt("Ingrese la cantidad a llevar:"));
+        const productoSeleccionado = productos[seleccionarProductos - 2];
+        const subtotal = calcularTotal(cantidad, productoSeleccionado.precio);
+        total += subtotal;
+        alert(`Agregado al carrito: ${productoSeleccionado.nombre} - Subtotal: $${subtotal}`);
+    } else if (seleccionarProductos === 0) {
+        break;
+    } else {
+        alert("Opción no válida. Por favor, seleccione una opción válida.");
     }
-    seleccionarProductos = Number(prompt("1-Calleras $7500 2-Muñequeras $3500 3-Soga $5000 4-Cinturon $9000 "))
 }
 
-alert("el total de la compra es de: " + total)
-    
-
+// Mostrar el total de la compra
+alert("El total de la compra es de: $" + total);
