@@ -1,5 +1,5 @@
-
 //// Simulador interactivo tienda ////
+
 
 function Producto(nombre, precio) {
     this.nombre = nombre;
