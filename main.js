@@ -1,57 +1,92 @@
-//// Simulador interactivo tienda ////
-
-
-function Producto(nombre, precio) {
-    this.nombre = nombre;
-    this.precio = precio;
+class Producto {
+    constructor(nombre, precio, imagen) {
+        this.nombre = nombre;
+        this.precio = precio;
+        this.imagen = imagen;
+    }
 }
 
 const productos = [
-    new Producto("Calleras", 7500),
-    new Producto("Muñequeras", 3500),
-    new Producto("Soga", 5000),
-    new Producto("Cinturón", 9000),
-    new Producto("Pelota de ejercicio", 5000),
-    new Producto("Pesas", 12000),
-    new Producto("Colchonetas", 1000)
+    new Producto("Calleras", 7500, "https://http2.mlstatic.com/D_NQ_NP_2X_934676-MLA51656385026_092022-F.webp"),
+    new Producto("Muñequeras", 3500, "https://http2.mlstatic.com/D_NQ_NP_2X_647342-MLA71259058204_082023-F.webp"),
+    new Producto("Soga", 5000, "https://http2.mlstatic.com/D_NQ_NP_2X_783722-MLA70257450564_072023-F.webp"),
+    new Producto("Cinturón", 9000, "https://http2.mlstatic.com/D_NQ_NP_2X_918878-MLA70486175523_072023-F.webp"),
+    new Producto("Pelota de ejercicio", 5000, "https://http2.mlstatic.com/D_NQ_NP_2X_650447-MLA31115685820_062019-F.webp"),
+    new Producto("Pesas", 12000, "https://http2.mlstatic.com/D_NQ_NP_2X_788857-MLA44728266196_012021-F.webp"),
+    new Producto("Colchonetas", 1000, "https://http2.mlstatic.com/D_NQ_NP_2X_658133-MLA50724939079_072022-F.webp")
 ];
 
 const calcularTotal = (cantidad, precio) => cantidad * precio;
 
-let total = 0;
+const productosContainer = document.querySelector('.productos');
+const carritoLista = document.querySelector('.carrito-lista');
+const totalElement = document.getElementById('total');
+const finalizarCompraButton = document.getElementById('finalizar-compra');
 
-// Función para buscar y filtrar productos por nombre
-function buscarProductoPorNombre(nombre) {
-    const resultados = productos.filter(producto => producto.nombre.toLowerCase().includes(nombre.toLowerCase()));
-    return resultados;
+function mostrarProductos() {
+    productosContainer.innerHTML = productos.map((producto, index) => `
+        <div class="producto">
+            <img src="${producto.imagen}" alt="${producto.nombre}">
+            <span>${producto.nombre} - $${producto.precio}</span>
+            <input type="number" class="cantidad" min="1" value="1">
+            <button class="agregar-carrito" data-index="${index}">Agregar al carrito</button>
+        </div>
+    `).join('');
 }
 
-while (true) {
-    const seleccionarProductos = Number(prompt(
-        "1- Buscar producto por nombre\n2- Calleras $7500\n3- Muñequeras $3500\n4- Soga $5000\n5- Cinturón $9000\n6- Pelota de ejercicio $5000\n7- Pesas $12000\n8- Colchonetas $1000\n0- Finalizar compra"
-    ));
+function actualizarCarrito() {
+    const carrito = JSON.parse(localStorage.getItem("carrito")) || [];
+    carritoLista.innerHTML = carrito.map((item, index) => `
+        <li>
+            <img src="${item.imagen}" alt="${item.nombre}" class="miniatura">
+            ${item.nombre} - Cantidad: ${item.cantidad} - Subtotal: $${item.subtotal}
+            <button class="eliminar-producto" data-index="${index}">Eliminar</button>
+        </li>
+    `).join('');
 
-    if (seleccionarProductos === 1) {
-        const terminoBusqueda = prompt("Ingrese el nombre del producto a buscar:");
-        const resultadosBusqueda = buscarProductoPorNombre(terminoBusqueda);
-
-        if (resultadosBusqueda.length > 0) {
-            alert("Resultados de la búsqueda:\n" + resultadosBusqueda.map(producto => `${producto.nombre} - $${producto.precio}`).join("\n"));
-        } else {
-            alert("No se encontraron resultados para la búsqueda.");
-        }
-    } else if (seleccionarProductos >= 2 && seleccionarProductos <= 8) {
-        const cantidad = Number(prompt("Ingrese la cantidad a llevar:"));
-        const productoSeleccionado = productos[seleccionarProductos - 2];
+    const total = carrito.reduce((acc, item) => acc + item.subtotal, 0);
+    totalElement.textContent = total;
+}
+function agregarAlCarrito(event) {
+    if (event.target.classList.contains('agregar-carrito')) {
+        const index = parseInt(event.target.dataset.index);
+        const cantidad = parseInt(event.target.previousElementSibling.value);
+        const productoSeleccionado = productos[index];
         const subtotal = calcularTotal(cantidad, productoSeleccionado.precio);
-        total += subtotal;
-        alert(`Agregado al carrito: ${productoSeleccionado.nombre} - Subtotal: $${subtotal}`);
-    } else if (seleccionarProductos === 0) {
-        break;
-    } else {
-        alert("Opción no válida. Por favor, seleccione una opción válida.");
+
+        const carrito = JSON.parse(localStorage.getItem("carrito")) || [];
+        carrito.push({
+            nombre: productoSeleccionado.nombre,
+            cantidad: cantidad,
+            subtotal: subtotal,
+            imagen: productoSeleccionado.imagen
+        });
+        localStorage.setItem("carrito", JSON.stringify(carrito));
+
+        actualizarCarrito();
     }
 }
 
-// Mostrar el total de la compra
-alert("El total de la compra es de: $" + total);
+function eliminarDelCarrito(event) {
+    if (event.target.classList.contains('eliminar-producto')) {
+        const index = parseInt(event.target.dataset.index);
+
+        const carrito = JSON.parse(localStorage.getItem("carrito")) || [];
+        carrito.splice(index, 1);
+        localStorage.setItem("carrito", JSON.stringify(carrito));
+
+        actualizarCarrito();
+    }
+}
+
+function finalizarCompra() {
+    localStorage.removeItem("carrito");
+    actualizarCarrito();
+    alert("¡Compra finalizada! Gracias por su compra.");
+}
+
+mostrarProductos();
+actualizarCarrito();
+productosContainer.addEventListener('click', agregarAlCarrito);
+carritoLista.addEventListener('click', eliminarDelCarrito);
+finalizarCompraButton.addEventListener('click', finalizarCompra);
