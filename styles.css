@@ -1,4 +1,4 @@
-/* Estilos para el carrito de compras */
+
 body {
     font-family: Arial, sans-serif;
     margin: 0;
@@ -32,7 +32,7 @@ body {
 
 .carrito-lista li {
     margin-bottom: 5px;
-}/* Estilos para el carrito de compras */
+}
 body {
     font-family: Arial, sans-serif;
     margin: 0;
@@ -165,3 +165,9 @@ h1 {
 #total {
     font-weight: bold;
 }
+
+@media (max-width: 768px) {
+    .logo{
+        margin-left: 100px;
+    }
+    }
