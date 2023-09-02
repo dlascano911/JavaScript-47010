@@ -161,6 +161,26 @@ h1 {
     background-color: #218838;
 }
 
+.mensaje-compra {
+    background-color: #4CAF50; 
+    color: white; 
+    text-align: center;
+    padding: 10px;
+    position: fixed;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 9999; 
+    display: none; 
+}
+
+.mensaje-compra button {
+    background-color: transparent;
+    border: none;
+    color: white;
+    cursor: pointer;
+    margin-left: 10px;
+}
 
 #total {
     font-weight: bold;

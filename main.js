@@ -13,7 +13,10 @@ const productos = [
     new Producto("Cinturón", 9000, "https://http2.mlstatic.com/D_NQ_NP_2X_918878-MLA70486175523_072023-F.webp"),
     new Producto("Pelota de ejercicio", 5000, "https://http2.mlstatic.com/D_NQ_NP_2X_650447-MLA31115685820_062019-F.webp"),
     new Producto("Pesas", 12000, "https://http2.mlstatic.com/D_NQ_NP_2X_788857-MLA44728266196_012021-F.webp"),
-    new Producto("Colchonetas", 1000, "https://http2.mlstatic.com/D_NQ_NP_2X_658133-MLA50724939079_072022-F.webp")
+    new Producto("Kettbell", 10000, "https://http2.mlstatic.com/D_NQ_NP_2X_686789-MLA51458956310_092022-F.webp"),
+    new Producto("Muñequera Antitranspirante", 3200, "https://http2.mlstatic.com/D_NQ_NP_2X_824250-MLA53025875493_122022-F.webp"),
+    new Producto("Carbonato de magnesio 500g", 5000, "https://http2.mlstatic.com/D_NQ_NP_2X_666702-MLA70537605427_072023-F.webp"),
+
 ];
 
 const calcularTotal = (cantidad, precio) => cantidad * precio;
@@ -82,9 +85,12 @@ function eliminarDelCarrito(event) {
 function finalizarCompra() {
     localStorage.removeItem("carrito");
     actualizarCarrito();
-    alert("¡Compra finalizada! Gracias por su compra.");
+    const mensajeCompra = document.getElementById('mensaje-compra');
+    mensajeCompra.style.display = 'block'; 
+    setTimeout(function() {
+        mensajeCompra.style.display = 'none';
+    }, 3000);
 }
-
 mostrarProductos();
 actualizarCarrito();
 productosContainer.addEventListener('click', agregarAlCarrito);
