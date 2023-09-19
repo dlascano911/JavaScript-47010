@@ -1,0 +1,32 @@
+[
+  {
+    "product_name": "Kettlebell",
+    "description": "A cast iron weight with a handle, used for various strength training exercises.",
+    "weight": "20 lbs",
+    "price": "$30.99"
+  },
+  {
+    "product_name": "Exercise Ball",
+    "description": "A large, inflatable ball used for balance, stability, and core exercises.",
+    "size": "65 cm",
+    "price": "$15.50"
+  },
+  {
+    "product_name": "Dumbbell Set",
+    "description": "A set of two handheld weights, commonly used for strength training.",
+    "weight_range": "5-25 lbs",
+    "price": "$49.99"
+  },
+  {
+    "product_name": "Resistance Bands",
+    "description": "Elastic bands used for resistance training and stretching exercises.",
+    "band_count": "5 bands",
+    "price": "$12.99"
+  },
+  {
+    "product_name": "Yoga Mat",
+    "description": "A cushioned mat used for yoga, stretching, and other floor exercises.",
+    "color": "Blue",
+    "price": "$19.95"
+  }
+]
