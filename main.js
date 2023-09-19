@@ -19,7 +19,7 @@ const productos = [
 ];
 
 const calcularTotal = (cantidad, precio) => cantidad * precio;
-
+const jsonFileUrl = 'jsonFile';
 const productosContainer = document.querySelector('.productos');
 const carritoLista = document.querySelector('.carrito-lista');
 const totalElement = document.getElementById('total');
@@ -28,6 +28,22 @@ const notificacion = document.getElementById('notificacion');
 const mensajeCompra = document.getElementById('mensaje-compra');
 const cerrarMensajeButton = document.getElementById('cerrar-mensaje');
 const busquedaInput = document.getElementById('busqueda');
+
+fetch(jsonFileUrl)
+  .then(response => 
+    // Parse the response as JSON.
+    return response.json();
+  })
+  .then(data => {
+    // Now you can work with the JSON data.
+    console.log(data);
+  })
+  .catch(error => {
+    // Handle any errors that occurred during the fetch.
+    console.error('There was a problem with the fetch operation:', error);
+  });
+
+
 
 function mostrarProductos(productosMostrados = productos) {
     productosContainer.innerHTML = productosMostrados.map((producto, index) => `
